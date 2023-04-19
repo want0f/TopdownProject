@@ -12,10 +12,14 @@ public class enemy_1_controller : MonoBehaviour
     private float moveSpeed;
     [SerializeField]
     private float rotationSpeed;
+    public float timer = 0;
+    public float interval = 0.5f;
+    public GameObject GameManager;
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player");
+        GameManager = GameObject.FindWithTag("GameManager");
     }
 
     // Update is called once per frame
@@ -28,7 +32,7 @@ public class enemy_1_controller : MonoBehaviour
         //move towards the player
         transform.position += transform.forward * Time.deltaTime * moveSpeed;
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("bullet"))
         {
@@ -36,7 +40,11 @@ public class enemy_1_controller : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            player.GetComponent<PlayerMovement>().TakeDamage();
+            if (Time.time > timer)
+            {
+                player.GetComponent<PlayerMovement>().TakeDamage();
+                timer = Time.time + interval;
+            }
         }
     }
 }

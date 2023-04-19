@@ -17,12 +17,16 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 2;
 
     [SerializeField]
-    private int health = 5;
+    public GameObject GameManager;
 
-    private bool isDead;
+    [SerializeField]
+    public int _health;
+
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
+        _health = GameManager.GetComponent<GameManager>().health;
     }
 
 
@@ -38,22 +42,20 @@ public class PlayerMovement : MonoBehaviour
         {
             rigidbody.velocity = Vector3.zero;
         }
-        if (health <= 0 && !isDead)
-        {
-            isDead = true;
-            StartCoroutine(DeadRoutine());
-        }
+        
     }
 
-    private IEnumerator DeadRoutine()
-    {
-        yield return new WaitForSeconds(2);
-        Destroy(gameObject);
-    }
+    //private IEnumerator DeadRoutine()
+    //{
+    //    yield return new WaitForSeconds(0.2f);
+    //    TakeDamage();
+    //}
 
     public void TakeDamage()
     {
-        health--;
+        Debug.Log("TakeDamage");
+        _health--;
     }
+
 
 }
